@@ -1,0 +1,32 @@
+{
+  "name": "findthebabies",
+  "version": "1.0.0",
+  "description": "I want to find the babies mentioned in the Epstein files that was taken away from the autist woman. https://youtu.be/nELNUPooLdk?si=J_NnpIynbImliC9E&t=249",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonDevOps/findTheBabies.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JonDevOps/findTheBabies/issues"
+  },
+  "homepage": "https://github.com/JonDevOps/findTheBabies#readme",
+  "devDependencies": {
+    "@types/node": "^25.3.2",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "^5.9.3"
+  }
+}
