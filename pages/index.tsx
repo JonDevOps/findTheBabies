@@ -10,13 +10,11 @@ export default function Home() {
       </Head>
 
       <main className="main">
-        <h1 className="title">
-          Find The Babies
-        </h1>
-
-        <p className="description">
-          Bringing hope and answers to families worldwide.
-        </p>
+        <div className="hero">
+          <h1>Find The Babies</h1>
+          <p>A dedicated platform committed to uncovering the truth and reuniting families. We tirelessly work to locate missing individuals, providing a beacon of hope and a hub for critical information and community support. Every search brings us closer to answers.</p>
+          <a href="#how-you-can-help" className="button">How You Can Help</a>
+        </div>
 
         <section className="section">
           <h2>Our Mission</h2>
@@ -25,11 +23,11 @@ export default function Home() {
 
         <section className="section">
           <h2>Current Cases</h2>
-          <p><em>(This section will be dynamically updated with profiles of missing individuals and relevant details, often integrated with a backend database like Firebase.)</em></p>
-          <p>Here, you will find information on individuals who are currently missing, including their last known whereabouts, descriptions, and contact information for reporting leads. Your vigilance can make a difference.</p>
+          <p><strong>Note:</strong> This section serves as a placeholder for demonstrating the site's structure in an offline, local environment. In a live deployment, it would be dynamically updated with profiles of missing individuals and relevant details from a backend.</p>
+          <p>Here, you would typically find information on individuals who are currently missing, including their last known whereabouts, descriptions, and contact information for reporting leads. Your vigilance can make a difference.</p>
         </section>
 
-        <section className="section">
+        <section className="section" id="how-you-can-help">
           <h2>How You Can Help</h2>
           <ul>
             <li><strong>Share Information:</strong> Spread awareness about missing persons cases on social media and within your networks.</li>
@@ -42,7 +40,7 @@ export default function Home() {
         <section className="section">
           <h2>Contact Us</h2>
           <p>For urgent matters or to report a lead, please use the contact information provided on specific case pages or reach out to us:</p>
-          <p>Email: <a href="mailto:info@findthemissing.org">info@findthemissing.org</a> (Placeholder)</p>
+          <p>Email: <a href="mailto:info@findthebabies.org">info@findthebabies.org</a> (Placeholder)</p>
           <p>Phone: (123) 456-7890 (Placeholder)</p>
         </section>
       </main>
