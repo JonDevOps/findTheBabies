@@ -1,0 +1,50 @@
+// Assumed data model: profiles/{uid}, private to the signed-in account.
+// Required fields: displayName (string <=100), focus (string <=240),
+// bookmarks (list <=20 containing only mission, updates, resources, community),
+// updatedAt (timestamp set with serverTimestamp()). No case or intake data.
+// Ownership is the immutable document path. Admin is a server-set custom claim.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function canWrite(uid) {
+      return isOwner(uid) && request.auth.token.email_verified == true;
+    }
+
+    function isValidProfile(data) {
+      let fields = ['displayName', 'focus', 'bookmarks', 'updatedAt'];
+      return data.keys().hasAll(fields)
+        && data.keys().hasOnly(fields)
+        && data.displayName is string && data.displayName.size() <= 100
+        && data.focus is string && data.focus.size() <= 240
+        && data.bookmarks is list && data.bookmarks.size() <= 20
+        && data.bookmarks.hasOnly(['mission', 'updates', 'resources', 'community'])
+        && data.updatedAt is timestamp && data.updatedAt == request.time;
+    }
+
+    // Admins (custom claim admin == true, set server-side only) can review
+    // and remove member profiles but never edit someone else's content.
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+
+    match /profiles/{uid} {
+      allow get: if isOwner(uid) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if canWrite(uid) && isValidProfile(request.resource.data);
+      allow update: if canWrite(uid) && isValidProfile(request.resource.data);
+      allow delete: if canWrite(uid) || isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

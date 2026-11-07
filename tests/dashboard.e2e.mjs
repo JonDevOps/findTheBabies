@@ -1,0 +1,34 @@
+import {chromium,expect} from '@playwright/test';
+const browser=await chromium.launch();
+await fetch('http://127.0.0.1:9099/emulator/v1/projects/demo-four-sites/accounts',{method:'DELETE'});
+const page=await browser.newPage({viewport:{width:1440,height:1000}});
+try{
+ await page.goto('http://127.0.0.1:4174/dashboard');
+ const next=page.waitForEvent('popup');
+ await page.getByRole('button',{name:'Continue with Google'}).click();
+ const popup=await next;await popup.getByText('Add new account').click();
+ await popup.locator('#email-input').fill('dashboard-test@example.com');
+ await popup.locator('#display-name-input').fill('Test User');
+ await popup.getByRole('button',{name:'Sign in with Google.com',exact:true}).click();
+ await page.getByRole('heading',{name:'Hello, Test.'}).waitFor();
+ await page.getByLabel('Display name',{exact:true}).fill('Saved Test Name');
+ await page.getByLabel('What would you like to explore?').fill('Explore community resources');
+ await page.getByRole('button',{name:'Save profile',exact:true}).click();
+ await page.getByRole('status').filter({hasText:'Saved to your account.'}).waitFor();
+ await page.getByRole('button',{name:'Save The Oakland pilot',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Unsave The Oakland pilot',exact:true})).toHaveAttribute('aria-pressed','true');
+ await page.reload();
+ await expect(page.getByLabel('Display name',{exact:true})).toHaveValue('Saved Test Name');
+ await expect(page.getByLabel('What would you like to explore?')).toHaveValue('Explore community resources');
+ await expect(page.getByRole('button',{name:'Unsave The Oakland pilot',exact:true})).toHaveAttribute('aria-pressed','true');
+ await page.screenshot({path:'screenshots/dashboard-tested.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Dashboard overflows mobile viewport');
+ page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'Clear my dashboard data'}).click();
+ await page.getByRole('status').filter({hasText:'Dashboard data cleared.'}).waitFor();
+ await page.reload();await expect(page.getByLabel('What would you like to explore?')).toHaveValue('');
+ await page.getByRole('button',{name:'Sign out',exact:true}).click();
+ await page.waitForURL('http://127.0.0.1:4174/');
+ await page.goto('http://127.0.0.1:4174/dashboard');await page.getByRole('heading',{name:'Welcome back.'}).waitFor();
+ console.log('PASS: Google emulator sign-in, profile save, bookmark, reload persistence, mobile dashboard, clear data, sign-out, protected route. Demo data only.');
+}finally{await browser.close();}

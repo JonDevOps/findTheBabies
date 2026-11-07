@@ -1,0 +1,25 @@
+{
+  "name": "findthebabies",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/build.mjs",
+    "test:rules": "node --test tests/rules.test.mjs"
+  },
+  "dependencies": {
+    "firebase": "^12.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "@playwright/test": "^1.56.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
+  }
+}
